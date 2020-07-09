@@ -19,6 +19,9 @@ class AssetThumb extends StatefulWidget {
   /// thumb is loading.
   final Widget spinner;
 
+  /// The thumb background color
+  final Color backgroundColor;
+
   const AssetThumb({
     Key key,
     @required this.asset,
@@ -32,6 +35,7 @@ class AssetThumb extends StatefulWidget {
         child: CircularProgressIndicator(),
       ),
     ),
+    this.backgroundColor
   }) : super(key: key);
 
   @override
@@ -46,6 +50,7 @@ class _AssetThumbState extends State<AssetThumb> {
   int get quality => widget.quality;
   Asset get asset => widget.asset;
   Widget get spinner => widget.spinner;
+  Color get backgroundColor => widget.backgroundColor;
 
   @override
   void initState() {
@@ -84,11 +89,14 @@ class _AssetThumbState extends State<AssetThumb> {
     if (_thumbData == null) {
       return spinner;
     }
-    return Image.memory(
-      _thumbData.buffer.asUint8List(),
-      key: ValueKey(asset.identifier),
-      fit: BoxFit.cover,
-      gaplessPlayback: true,
+    return Container(
+      color: backgroundColor,
+      child: Image.memory(
+        _thumbData.buffer.asUint8List(),
+        key: ValueKey(asset.identifier),
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+      ),
     );
   }
 }

@@ -96,6 +96,7 @@ public class MultiImagePickerPlugin implements
         final int width;
         final int height;
         final int quality;
+        final Context context;
 
         GetThumbnailTask(Activity context, BinaryMessenger messenger, String identifier, int width, int height, int quality) {
             super();
@@ -105,6 +106,7 @@ public class MultiImagePickerPlugin implements
             this.height = height;
             this.quality = quality;
             this.activityReference = new WeakReference<>(context);
+            this.context = context;
         }
 
         @Override
@@ -122,8 +124,10 @@ public class MultiImagePickerPlugin implements
 
                 if (bitmap == null) return null;
 
+                final Bitmap.CompressFormat bitmapFormat = getBitmapFormat(uri, context);
+
                 ByteArrayOutputStream bitmapStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, this.quality, bitmapStream);
+                bitmap.compress(bitmapFormat, this.quality, bitmapStream);
                 byteArray = bitmapStream.toByteArray();
                 bitmap.recycle();
                 bitmapStream.close();
@@ -157,6 +161,7 @@ public class MultiImagePickerPlugin implements
         final BinaryMessenger messenger;
         final String identifier;
         final int quality;
+        final Context context;
 
         GetImageTask(Activity context, BinaryMessenger messenger, String identifier, int quality) {
             super();
@@ -164,6 +169,7 @@ public class MultiImagePickerPlugin implements
             this.identifier = identifier;
             this.quality = quality;
             this.activityReference = new WeakReference<>(context);
+            this.context = context;
         }
 
         @Override
@@ -180,8 +186,10 @@ public class MultiImagePickerPlugin implements
 
                 if (bitmap == null) return null;
 
+                final Bitmap.CompressFormat bitmapFormat = getBitmapFormat(uri, context);
+
                 ByteArrayOutputStream bitmapStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, this.quality, bitmapStream);
+                bitmap.compress(bitmapFormat, this.quality, bitmapStream);
                 bytesArray = bitmapStream.toByteArray();
                 bitmap.recycle();
                 bitmapStream.close();
@@ -201,6 +209,17 @@ public class MultiImagePickerPlugin implements
             this.messenger.send("multi_image_picker/image/" + this.identifier + ".original", buffer);
             buffer.clear();
         }
+    }
+
+    private static Bitmap.CompressFormat getBitmapFormat(Uri uri, Context context) {
+        final String filename = getFileName(uri, context);
+        final String fileType = filename.substring(filename.lastIndexOf("."));
+
+        if (fileType.equalsIgnoreCase(".jpeg")) return Bitmap.CompressFormat.JPEG;
+        if (fileType.equalsIgnoreCase(".png")) return Bitmap.CompressFormat.PNG;
+        if (fileType.equalsIgnoreCase(".webp")) return Bitmap.CompressFormat.WEBP;
+
+        return Bitmap.CompressFormat.JPEG;
     }
 
     @Override
@@ -466,7 +485,7 @@ public class MultiImagePickerPlugin implements
     private boolean uriExists(String identifier) {
         Uri uri = Uri.parse(identifier);
 
-        String fileName = this.getFileName(uri);
+        String fileName = getFileName(uri, context);
 
         return (fileName != null);
     }
@@ -596,7 +615,7 @@ public class MultiImagePickerPlugin implements
 
                 map.put("width", width);
                 map.put("height", height);
-                map.put("name", getFileName(uri));
+                map.put("name", getFileName(uri, context));
                 result.add(map);
             }
             finishWithSuccess(result);
@@ -670,7 +689,7 @@ public class MultiImagePickerPlugin implements
         return result;
     }
 
-    private String getFileName(Uri uri) {
+    private static String getFileName(Uri uri, Context context) {
         String result = null;
         if (uri.getScheme().equals("content")) {
             Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
