@@ -1,8 +1,51 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+### Change (v4.7.14)
+
+## 2020-09-16
+
+- Revert a commit, causing a bug with mage selection on iOS
+
+### Change (v4.7.13)
+
+## 2020-09-09
+
+- Fix picking live images on iOS will now pick the correct image
+
+### Change (v4.7.12)
+
+## 2020-08-22
+
+- README and CHANGELOG fixes for pub.dev
+
+### Change (v4.7.11)
+
+## 2020-08-19
+
+- Fix image picker regression on Android 
+
+### Change (v4.7.10)
+
+## 2020-07-31
+
+- Support activity in v1 embedding (https://github.com/Sh1d0w/multi_image_picker/pull/506)
+- Fix on iOS can't present picker in some cases (https://github.com/Sh1d0w/multi_image_picker/pull/507)
+
+### Change (v4.6.9)
+
+## 2020-07-22
+
+- Downgrade minimum Flutter version
+
+### Change (v4.6.8)
+
+## 2020-07-21
+
+- Supporting the new Android plugins APIs
 
 ### Change (v4.6.7)
 
