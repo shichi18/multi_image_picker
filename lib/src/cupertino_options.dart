@@ -1,12 +1,12 @@
 class CupertinoOptions {
-  final String backgroundColor;
-  final String selectionShadowColor;
-  final String selectionStrokeColor;
-  final String selectionFillColor;
-  final String selectionTextColor;
-  final String selectionCharacter;
-  final String takePhotoIcon;
-  final bool autoCloseOnSelectionLimit;
+  final String? backgroundColor;
+  final String? selectionShadowColor;
+  final String? selectionStrokeColor;
+  final String? selectionFillColor;
+  final String? selectionTextColor;
+  final String? selectionCharacter;
+  final String? takePhotoIcon;
+  final bool? autoCloseOnSelectionLimit;
 
   const CupertinoOptions({
     this.backgroundColor,
