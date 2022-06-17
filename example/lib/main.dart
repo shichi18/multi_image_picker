@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
           asset: asset,
           width: 300,
           height: 300,
+          backgroundColor: Colors.grey,
         );
       }),
     );
